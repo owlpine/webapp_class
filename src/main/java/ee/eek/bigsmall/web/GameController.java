@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class GameController {
     private final GameService gameService;
 
-    @GetMapping("/")
+    @GetMapping("new")
     public  NewGameResponse newGame() {
         return gameService.newGame();
     }
 
-    @PostMapping
+    @PostMapping("new")
     public NewGameResponse newGame(@RequestBody NewGameRequest newGameRequest) {
         return gameService.newGame(newGameRequest);
     }
