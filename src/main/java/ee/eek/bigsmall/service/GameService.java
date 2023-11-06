@@ -15,17 +15,15 @@ import java.util.Random;
 public class GameService {
     private final Map<Integer, Integer> games = new HashMap<>();
     private final Random random = new Random();
-    private static final int ANSWER_UPPER_BOUND = 101;
 
     public NewGameResponse newGame(NewGameRequest newGameRequest) {
-    public NewGameResponse createGame(NewGameRequest newGameRequest) {
         Integer gameID = newGameID();
         games.put(gameID, newGameRequest.getAnswer());
         return new NewGameResponse()
                 .setGameID(gameID);
     }
 
-    public NewGameResponse createGame() {
+    public NewGameResponse newGame() {
         Integer gameID = newGameID();
         games.put(gameID, newAnswer());
         return new NewGameResponse()
@@ -51,6 +49,6 @@ public class GameService {
     }
 
     private Integer newAnswer() {
-        return random.nextInt(ANSWER_UPPER_BOUND);
+        return random.nextInt(101);
     }
 }
