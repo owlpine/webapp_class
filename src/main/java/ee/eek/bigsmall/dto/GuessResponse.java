@@ -5,7 +5,6 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class GameResponse {
-    private Long id;
-    private String name;
+public class GuessResponse {
+    private String response;
 }
