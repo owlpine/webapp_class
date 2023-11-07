@@ -6,5 +6,5 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class NewGameResponse {
-    private Integer gameID;
+    private Long gameID;
 }

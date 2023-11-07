@@ -4,65 +4,65 @@ import ee.eek.bigsmall.dto.GameResponse;
 import ee.eek.bigsmall.dto.GuessResponse;
 import ee.eek.bigsmall.dto.NewGameRequest;
 import ee.eek.bigsmall.dto.NewGameResponse;
+import ee.eek.bigsmall.model.Game;
 import ee.eek.bigsmall.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class GameService {
-    private final GameRepository bigsmallRepository;
-    private final Map<Integer, Integer> games = new HashMap<>();
+    private final GameRepository gameRepository;
     private final Random random = new Random();
     private static final int ANSWER_UPPER_BOUND = 101;
 
-//    public Iterable
-
     public NewGameResponse createGame(NewGameRequest newGameRequest) {
-        Integer gameID = newGameID();
-        games.put(gameID, newGameRequest.getAnswer());
-        return new NewGameResponse()
-                .setGameID(gameID);
+        Game game = new Game();
+        game.setName(newGameRequest.getName());
+        game.setAnswer(newGameRequest.getAnswer());
+        Game saved = gameRepository.save(game);
+        return new NewGameResponse().setGameID(saved.getId());
     }
 
     public NewGameResponse createGame() {
-        Integer gameID = newGameID();
-        games.put(gameID, newAnswer());
-        return new NewGameResponse()
-                .setGameID(gameID);
+        Game game = new Game();
+        game.setName(randomGameName());
+        game.setAnswer(randomAnswer());
+        Game saved = gameRepository.save(game);
+        return new NewGameResponse().setGameID(saved.getId());
     }
 
-    public GuessResponse guess(Integer gameID, Integer guess) {
-        Integer answer = games.get(gameID);
+    public GuessResponse guess(Long gameID, Long guess) {
+        Game game = gameRepository.findById(gameID).orElseThrow();
+        String name = game.getName();
+        Long answer = game.getAnswer();
         GuessResponse guessResponse = new GuessResponse();
         if (guess.equals(answer)) {
-            guessResponse.setResponse("Correct! Thanks for playing :)");
-            games.remove(gameID);
+            guessResponse.setResponse("Correct! Thanks for playing %s :D".formatted(name));
+            gameRepository.delete(game);
         } else if (guess.compareTo(answer) < 0) {
-            guessResponse.setResponse("Too small!");
+            guessResponse.setResponse("Playing %s. Your guess is too small!".formatted(name));
         } else if (guess.compareTo(answer) > 0) {
-            guessResponse.setResponse("Too big!");
+            guessResponse.setResponse("Playing %s. Your guess is too big!".formatted(name));
         }
         return guessResponse;
     }
 
     public List<GameResponse> getAll() {
-        return bigsmallRepository.findAll()
+        return gameRepository.findAll()
                 .stream().map(game -> new GameResponse()
                         .setId(game.getId())
                         .setName(game.getName())).toList();
     }
 
-    private Integer newGameID() {
-        return Math.abs(random.nextInt());
+    private String randomGameName() {
+        return "Game" + Math.abs(random.nextInt());
     }
 
-    private Integer newAnswer() {
-        return random.nextInt(ANSWER_UPPER_BOUND);
+    private Long randomAnswer() {
+        return random.nextLong(ANSWER_UPPER_BOUND);
     }
 }

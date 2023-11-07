@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class NewGameRequest {
-    private Integer answer;
+    private String name;
+    private Long answer;
 }

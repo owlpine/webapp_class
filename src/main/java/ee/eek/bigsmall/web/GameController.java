@@ -28,7 +28,7 @@ public class GameController {
     }
 
     @GetMapping("{gameID}/guess/{guess}")
-    public GuessResponse guess(@PathVariable Integer gameID, @PathVariable Integer guess) {
+    public GuessResponse guess(@PathVariable Long gameID, @PathVariable Long guess) {
         return gameService.guess(gameID, guess);
     }
 

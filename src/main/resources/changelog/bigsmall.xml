@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        logicalFilePath="db.changelog-1.0.xml"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create-bigsmall-game-db" author="tim">
+        <sql>
+            CREATE TABLE big_small
+            (
+                id             SERIAL PRIMARY KEY,
+                name           varchar(255) NOT NULL,
+                answer         integer      NOT NULL,
+                created_at     timestamp DEFAULT NOW()
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
