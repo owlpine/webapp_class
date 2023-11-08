@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        logicalFilePath="db.changelog-2.0.xml"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create-product-db" author="tim">
+        <sql>
+            CREATE TABLE product
+            (
+                id             SERIAL PRIMARY KEY
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="rest-of-the-product-db" author="tim">
+        <sql>
+            alter table product
+                alter column id set not null,
+                add column created_at timestamp not null default now(),
+                add column created_by varchar(255),
+                add column updated_at timestamp null,
+                add column updated_by varchar(255) null,
+                add column name varchar(255) not null,
+                add column description text null,
+                add column price double precision null;
+        </sql>
+    </changeSet>
+
+    <changeSet id="maybe-id-doesn't-need-not-null" author="tim">
+        <sql>
+            drop table product;
+            create table product
+            (
+                id             serial primary key,
+                created_at     timestamp default now(),
+                created_by     varchar(255) null,
+                updated_at     timestamp null,
+                updated_by     varchar(255) null,
+                name           varchar(255) not null,
+                description    text null,
+                price          double precision null
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
