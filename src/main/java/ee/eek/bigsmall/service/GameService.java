@@ -21,22 +21,23 @@ public class GameService {
 
     public NewGameResponse createGame(NewGameRequest newGameRequest) {
         Game game = new Game();
-        game.setName(newGameRequest.getName());
-        game.setAnswer(newGameRequest.getAnswer());
-        Game saved = gameRepository.save(game);
-        return new NewGameResponse().setGameID(saved.getId());
-    }
-
-    public NewGameResponse createGame() {
-        Game game = new Game();
-        game.setName(randomGameName());
-        game.setAnswer(randomAnswer());
+        if (newGameRequest.getName() == null) {
+            game.setName(randomGameName());
+        } else {
+            game.setName(newGameRequest.getName());
+        }
+        if (newGameRequest.getAnswer() == null) {
+            game.setAnswer(randomAnswer());
+        } else {
+            game.setAnswer(newGameRequest.getAnswer());
+        }
         Game saved = gameRepository.save(game);
         return new NewGameResponse().setGameID(saved.getId());
     }
 
     public GuessResponse guess(Long gameID, Long guess) {
-        Game game = gameRepository.findById(gameID).orElseThrow();
+        Game game = gameRepository.findById(gameID)
+                .orElseThrow(() -> new IllegalStateException("Game with ID \"%s\" not found".formatted(gameID)));
         String name = game.getName();
         Long answer = game.getAnswer();
         GuessResponse guessResponse = new GuessResponse();

@@ -17,11 +17,6 @@ public class GameController {
     private final GameService gameService;
     // @RequestBody, @PathVariable, @RequestParam
 
-    @GetMapping
-    public  NewGameResponse createGame() {
-        return gameService.createGame();
-    }
-
     @PostMapping
     public NewGameResponse createGame(@RequestBody NewGameRequest newGameRequest) {
         return gameService.createGame(newGameRequest);
@@ -32,7 +27,7 @@ public class GameController {
         return gameService.guess(gameID, guess);
     }
 
-    @GetMapping("all")
+    @GetMapping
     public List<GameResponse> getAll() {
         return gameService.getAll();
     }
