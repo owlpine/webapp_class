@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 public class ProductDTO {
-    Long id;
-    LocalDateTime createdAt;
-    String createdBy;
-    LocalDateTime updatedAt;
-    String updatedBy;
-    String name;
-    String description;
-    Double price;
+    private Long id;
+    private LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime updatedAt;
+    private String updatedBy;
+    private String name;
+    private String description;
+    private Double price;
 }

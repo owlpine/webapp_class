@@ -33,6 +33,7 @@ public class ProductsController {
     }
 
     @DeleteMapping("{id}")
+    // TODO client always gets 200 even if id does not exist
     public void deleteProduct(@PathVariable Long id) {
         productsService.deleteProduct(id);
     }
