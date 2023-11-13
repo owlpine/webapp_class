@@ -16,7 +16,7 @@ import java.util.List;
 public class ProductsService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final String defaultRole = "Tim";
+    private final String DEFAULT_ROLE = "Tim";
 
     public List<ProductDTO> getProducts() {
         List<ProductDTO> productDTOs = new ArrayList<>();
@@ -34,7 +34,7 @@ public class ProductsService {
     public ProductDTO createProduct(ProductDTO productDTO) {
         productDTO.setCreatedAt(LocalDateTime.now());
         if (productDTO.getCreatedBy() == null || productDTO.getCreatedBy().isBlank()) {
-            productDTO.setCreatedBy(defaultRole);
+            productDTO.setCreatedBy(DEFAULT_ROLE);
         }
         if (productDTO.getUpdatedAt() != null) {
             productDTO.setUpdatedAt(null);
@@ -49,13 +49,13 @@ public class ProductsService {
     }
 
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
-        Product product = productRepository.findById(id).orElseThrow(RuntimeException::new);
+        Product product = productRepository.findById(id).orElseThrow(IllegalStateException::new);
         productDTO.setId(product.getId());
         productDTO.setCreatedAt(product.getCreatedAt());
         productDTO.setCreatedBy(product.getCreatedBy());
         productDTO.setUpdatedAt(LocalDateTime.now());
         if (productDTO.getUpdatedBy() == null || productDTO.getUpdatedBy().isBlank()) {
-            productDTO.setUpdatedBy(defaultRole);
+            productDTO.setUpdatedBy(DEFAULT_ROLE);
         }
         // blank, set null; null, keep original; else set value
         if (productDTO.getName() == null) {

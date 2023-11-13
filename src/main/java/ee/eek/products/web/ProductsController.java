@@ -31,6 +31,7 @@ public class ProductsController {
     public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO product) {
         return productsService.updateProduct(id, product);
     }
+    // Maybe you want separate PATCH AND PUT?
 
     @DeleteMapping("{id}")
     // TODO client always gets 200 even if id does not exist
